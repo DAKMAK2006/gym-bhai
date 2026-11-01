@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mess-to-Muscle · Stage 1 test</title>
+<style>
+  body { margin:0; background:#0e1014; color:#e8e8e8; font-family:system-ui,sans-serif; padding:24px; max-width:900px; margin:auto; }
+  h1 { font-size:18px; letter-spacing:.08em; } h2 { font-size:13px; opacity:.6; text-transform:uppercase; letter-spacing:.1em; margin-top:28px; }
+  .row { display:flex; gap:8px; }
+  #mic { width:56px; height:56px; border-radius:50%; border:2px solid #4ade80; background:#10201a; color:#fff; font-size:22px; cursor:pointer; flex:none; }
+  #mic.rec { background:#dc2626; border-color:#dc2626; }
+  input, select { background:#171a21; color:#eee; border:1px solid #333; border-radius:6px; padding:12px; font-size:15px; }
+  input { flex:1; } button.go { background:#4ade80; color:#000; border:0; border-radius:6px; padding:0 18px; font-weight:700; cursor:pointer; }
+  .chips button { background:none; border:1px solid #444; color:#ccc; border-radius:99px; padding:4px 10px; margin:6px 6px 0 0; font-size:12px; cursor:pointer; }
+  pre { background:#171a21; border-radius:8px; padding:14px; overflow:auto; font-size:13px; line-height:1.5; }
+  .tr { font-style:italic; opacity:.8; } .warn { color:#fbbf24; } .bad { color:#f87171; }
+  table { width:100%; border-collapse:collapse; font-size:13px; } td,th { border-bottom:1px solid #222; padding:6px 8px; text-align:left; vertical-align:top; }
+</style>
+</head>
+<body>
+<h1>MESS-TO-MUSCLE · STAGE 1 TEST</h1>
+<div class="row">
+  <button id="mic" title="Click to record, click again to send">🎙</button>
+  <input id="txt" placeholder="or type: bench 60 x 8, 8, 6 aur lunch mein 4 roti dal paneer, 4 ghante soya">
+  <select id="lang"><option value="unknown">Auto</option><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select>
+  <button class="go" id="send">Log</button>
+</div>
+<div class="chips">
+  <button>bench 60 x 8, 8, 6 aur squat 80 kilo 3 sets of 5. lunch mein 4 roti dal paneer. kal sirf 4 ghante soya</button>
+  <button>Deadlift 100 kg for 5, then 105 for 3. Midsem in 4 days. I weigh 72 kg. 3 eggs and milk for breakfast.</button>
+  <button>bench press 9000 kg for 8 reps, then 60 kg for 8, slept 40 hours</button>
+  <button>what's the weather in Powai</button>
+</div>
+
+<h2>What we heard</h2><div id="tr" class="tr">—</div>
+<h2>What we understood</h2><pre id="out">—</pre>
+<h2>Saved log</h2><table id="log"></table>
+
+<script>
+const $ = id => document.getElementById(id);
+let rec, chunks = [];
+
+async function send(form) {
+  $("out").textContent = "Thinking…"; $("tr").textContent = "…";
+  form.append("language", $("lang").value);
+  const t0 = performance.now();
+  try {
+    const r = await fetch("/api/log", { method:"POST", body:form });
+    const d = await r.json();
+    $("tr").textContent = d.transcript || "—";
+    const secs = ((performance.now() - t0) / 1000).toFixed(1);
+    const head = d.error ? `<span class="bad">${d.error}</span>\n` : d.saved ? `✅ saved (${secs}s)\n` : "";
+    const warn = (d.warnings || []).map(w => `<span class="warn">⚠ ${w}</span>`).join("\n");
+    const { transcript, ts, saved, warnings, error, ...rest } = d;
+    $("out").innerHTML = head + (warn ? warn + "\n" : "") + JSON.stringify(rest, null, 2);
+  } catch (e) { $("out").innerHTML = `<span class="bad">${e.message}</span>`; }
+  loadLog();
+}
+
+async function loadLog() {
+  const rows = (await (await fetch("/api/entries")).json()).reverse();
+  $("log").innerHTML = "<tr><th>Time</th><th>Workouts</th><th>Meals</th><th>Sleep</th><th>Other</th></tr>" + rows.map(e => `<tr>
+    <td>${e.ts.slice(11)}</td>
+    <td>${e.workouts.map(w => w.exercise + ": " + w.sets.map(s => (s.kg ?? "BW") + "×" + s.reps).join(", ")).join("<br>")}</td>
+    <td>${e.meals.map(m => (m.qty ?? "") + " " + m.item).join(", ")}</td>
+    <td>${e.sleep_hours ?? ""}</td>
+    <td>${[e.exam_in_days != null ? "exam in " + e.exam_in_days + "d" : "", e.bodyweight_kg ? e.bodyweight_kg + "kg" : ""].filter(Boolean).join(", ")}</td></tr>`).join("");
+}
+
+function sendText(t) { t = t.trim(); if (!t) return; const f = new FormData(); f.append("text", t); send(f); }
+$("send").onclick = () => sendText($("txt").value);
+$("txt").onkeydown = e => { if (e.key === "Enter") sendText($("txt").value); };
+document.querySelectorAll(".chips button").forEach(b => b.onclick = () => sendText(b.textContent));
+
+$("mic").onclick = async () => {
+  if (rec && rec.state === "recording") { rec.stop(); return; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+    rec = new MediaRecorder(stream); chunks = [];
+    rec.ondataavailable = e => chunks.push(e.data);
+    rec.onstop = () => {
+      stream.getTracks().forEach(t => t.stop()); $("mic").classList.remove("rec");
+      const f = new FormData(); f.append("audio", new Blob(chunks, { type: rec.mimeType }), "audio.webm"); send(f);
+    };
+    rec.start(); $("mic").classList.add("rec");
+  } catch (e) { $("out").innerHTML = `<span class="bad">Mic blocked: ${e.message}</span>`; }
+};
+loadLog();
+</script>
+</body>
+</html>

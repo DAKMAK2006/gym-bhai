@@ -1,0 +1,51 @@
+[
+  {
+    "ts": "2026-11-01T16:18:59",
+    "transcript": "Lat pull down 70 kilogram 8 rep और preacher curls 8 rep 35 kilogram के साथ।\nचार रोटी दाल पनीर खाया और चार घंटे सोया।",
+    "workouts": [
+      {
+        "exercise": "lat pulldown",
+        "sets": [
+          {
+            "reps": 8,
+            "kg": 70.0
+          }
+        ]
+      },
+      {
+        "exercise": "preacher curl",
+        "sets": [
+          {
+            "reps": 8,
+            "kg": 35.0
+          }
+        ]
+      }
+    ],
+    "meals": [
+      {
+        "meal": "lunch",
+        "item": "roti",
+        "qty": 4.0,
+        "unit": null
+      },
+      {
+        "meal": "lunch",
+        "item": "dal",
+        "qty": null,
+        "unit": null
+      },
+      {
+        "meal": "lunch",
+        "item": "paneer",
+        "qty": null,
+        "unit": null
+      }
+    ],
+    "sleep_hours": 4.0,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "",
+    "warnings": []
+  }
+]
