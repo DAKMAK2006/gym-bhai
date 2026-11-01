@@ -1,14 +1,98 @@
 [
   {
-    "ts": "2026-11-01T16:18:59",
-    "transcript": "Lat pull down 70 kilogram 8 rep और preacher curls 8 rep 35 kilogram के साथ।\nचार रोटी दाल पनीर खाया और चार घंटे सोया।",
+    "ts": "2026-10-25T18:00:00",
+    "transcript": "bench 37.5 x 8, 8, 7, squat 70 x 8, 8, 7",
+    "workouts": [
+      {
+        "exercise": "bench press",
+        "sets": [
+          {
+            "kg": 37.5,
+            "reps": 8
+          },
+          {
+            "kg": 37.5,
+            "reps": 8
+          },
+          {
+            "kg": 37.5,
+            "reps": 7
+          }
+        ]
+      },
+      {
+        "exercise": "squat",
+        "sets": [
+          {
+            "kg": 70,
+            "reps": 8
+          },
+          {
+            "kg": 70,
+            "reps": 8
+          },
+          {
+            "kg": 70,
+            "reps": 7
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": 7,
+    "exam_in_days": null,
+    "bodyweight_kg": 69.4,
+    "notes": "",
+    "warnings": []
+  },
+  {
+    "ts": "2026-10-26T13:00:00",
+    "transcript": "lunch 4 roti dal paneer",
+    "workouts": [],
+    "meals": [
+      {
+        "meal": null,
+        "unit": null,
+        "qty": 4,
+        "item": "roti"
+      },
+      {
+        "meal": null,
+        "unit": null,
+        "qty": null,
+        "item": "dal"
+      },
+      {
+        "meal": null,
+        "unit": null,
+        "qty": null,
+        "item": "paneer"
+      }
+    ],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "",
+    "warnings": []
+  },
+  {
+    "ts": "2026-10-27T18:00:00",
+    "transcript": "lat pulldown 60 x 10, 10, 9, curls 30 x 10, 10, 8",
     "workouts": [
       {
         "exercise": "lat pulldown",
         "sets": [
           {
-            "reps": 8,
-            "kg": 70.0
+            "kg": 60,
+            "reps": 10
+          },
+          {
+            "kg": 60,
+            "reps": 10
+          },
+          {
+            "kg": 60,
+            "reps": 9
           }
         ]
       },
@@ -16,175 +100,250 @@
         "exercise": "preacher curl",
         "sets": [
           {
-            "reps": 8,
-            "kg": 35.0
+            "kg": 30,
+            "reps": 10
+          },
+          {
+            "kg": 30,
+            "reps": 10
+          },
+          {
+            "kg": 30,
+            "reps": 8
           }
         ]
       }
     ],
-    "meals": [
-      {
-        "meal": "lunch",
-        "item": "roti",
-        "qty": 4.0,
-        "unit": null
-      },
-      {
-        "meal": "lunch",
-        "item": "dal",
-        "qty": null,
-        "unit": null
-      },
-      {
-        "meal": "lunch",
-        "item": "paneer",
-        "qty": null,
-        "unit": null
-      }
-    ],
-    "sleep_hours": 4.0,
+    "meals": [],
+    "sleep_hours": 6.5,
     "exam_in_days": null,
     "bodyweight_kg": null,
     "notes": "",
     "warnings": []
   },
   {
-    "ts": "2026-11-01T16:30:36",
-    "transcript": "Today I did a new PR that I was able to get around 10 reps of 40 kilograms in the bench press and so and it has been since two sessions.\nSo, kya ab main isko ab kya karun bataiye aap hi? Badhaun ya ghataun ya phir karte rahun kaam is pe aur?",
+    "ts": "2026-10-28T18:00:00",
+    "transcript": "bench 40 x 8, 8, 8, squat 75 x 8, 8, 8",
     "workouts": [
       {
         "exercise": "bench press",
         "sets": [
           {
-            "reps": 10,
-            "kg": 40.0
+            "kg": 40,
+            "reps": 8
+          },
+          {
+            "kg": 40,
+            "reps": 8
+          },
+          {
+            "kg": 40,
+            "reps": 8
+          }
+        ]
+      },
+      {
+        "exercise": "squat",
+        "sets": [
+          {
+            "kg": 75,
+            "reps": 8
+          },
+          {
+            "kg": 75,
+            "reps": 8
+          },
+          {
+            "kg": 75,
+            "reps": 8
           }
         ]
       }
     ],
     "meals": [],
-    "sleep_hours": null,
+    "sleep_hours": 6,
     "exam_in_days": null,
-    "bodyweight_kg": null,
-    "notes": "The user is asking whether to increase, decrease, or continue working on the bench press weight.",
+    "bodyweight_kg": 69.8,
+    "notes": "",
     "warnings": []
   },
   {
-    "ts": "2026-11-01T16:40:12",
-    "transcript": "bench 40 kg 10 reps, kya badhaun?",
+    "ts": "2026-10-29T20:00:00",
+    "transcript": "pull ups 8, 7, 6, overhead press 30 x 8, 8, 7",
+    "workouts": [
+      {
+        "exercise": "pull-up",
+        "sets": [
+          {
+            "kg": null,
+            "reps": 8
+          },
+          {
+            "kg": null,
+            "reps": 7
+          },
+          {
+            "kg": null,
+            "reps": 6
+          }
+        ]
+      },
+      {
+        "exercise": "overhead press",
+        "sets": [
+          {
+            "kg": 30,
+            "reps": 8
+          },
+          {
+            "kg": 30,
+            "reps": 8
+          },
+          {
+            "kg": 30,
+            "reps": 7
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": 5.5,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "",
+    "warnings": []
+  },
+  {
+    "ts": "2026-10-30T18:00:00",
+    "transcript": "bench 40 x 9, 9, 8, squat 80 x 8, 7, 6",
     "workouts": [
       {
         "exercise": "bench press",
         "sets": [
           {
-            "reps": 10,
-            "kg": 40.0
+            "kg": 40,
+            "reps": 9
+          },
+          {
+            "kg": 40,
+            "reps": 9
+          },
+          {
+            "kg": 40,
+            "reps": 8
           }
         ]
-      }
-    ],
-    "meals": [],
-    "sleep_hours": null,
-    "exam_in_days": null,
-    "bodyweight_kg": null,
-    "notes": "kya badhaun?",
-    "warnings": []
-  },
-  {
-    "ts": "2026-11-01T16:40:32",
-    "transcript": "bench 40 kg 10 reps, kya badhaun?",
-    "workouts": [
+      },
       {
-        "exercise": "bench press",
+        "exercise": "squat",
         "sets": [
           {
-            "reps": 10,
-            "kg": 40.0
-          }
-        ]
-      }
-    ],
-    "meals": [],
-    "sleep_hours": null,
-    "exam_in_days": null,
-    "bodyweight_kg": null,
-    "notes": "kya badhaun?",
-    "warnings": []
-  },
-  {
-    "ts": "2026-11-01T16:40:54",
-    "transcript": "bench 40 kg 10 reps, kya badhaun?",
-    "workouts": [
-      {
-        "exercise": "bench press",
-        "sets": [
+            "kg": 80,
+            "reps": 8
+          },
           {
-            "reps": 10,
-            "kg": 40.0
+            "kg": 80,
+            "reps": 7
+          },
+          {
+            "kg": 80,
+            "reps": 6
           }
         ]
       }
     ],
     "meals": [],
-    "sleep_hours": null,
+    "sleep_hours": 6,
     "exam_in_days": null,
-    "bodyweight_kg": null,
-    "notes": "kya badhaun?",
+    "bodyweight_kg": 70.0,
+    "notes": "",
     "warnings": []
   },
   {
-    "ts": "2026-11-01T16:43:20",
-    "transcript": "Hello hello hello. Ah so I did lat pull down 70 kilograms two sets of 10 reps and then 12 reps. Should I increase it or not because I have been doing this since past two sessions.",
+    "ts": "2026-10-31T18:00:00",
+    "transcript": "lat pulldown 65 x 10, 10, 10, curls 30 x 10, 10, 10",
     "workouts": [
       {
         "exercise": "lat pulldown",
         "sets": [
           {
-            "reps": 10,
-            "kg": 70.0
+            "kg": 65,
+            "reps": 10
           },
           {
-            "reps": 12,
-            "kg": 70.0
+            "kg": 65,
+            "reps": 10
+          },
+          {
+            "kg": 65,
+            "reps": 10
+          }
+        ]
+      },
+      {
+        "exercise": "preacher curl",
+        "sets": [
+          {
+            "kg": 30,
+            "reps": 10
+          },
+          {
+            "kg": 30,
+            "reps": 10
+          },
+          {
+            "kg": 30,
+            "reps": 10
           }
         ]
       }
     ],
     "meals": [],
-    "sleep_hours": null,
-    "exam_in_days": null,
+    "sleep_hours": 5.5,
+    "exam_in_days": 5,
     "bodyweight_kg": null,
-    "notes": "Asked whether to increase the weight or not as he has been doing this since the past two sessions.",
+    "notes": "",
     "warnings": []
   },
   {
-    "ts": "2026-11-01T16:44:07",
-    "transcript": "Okay now I ate around one cup of paneer ki sabzi and with two two rotis and then I ate around hundred grams of dahi.",
+    "ts": "2026-11-01T09:00:00",
+    "transcript": "breakfast 3 eggs, 2 slice bread, 1 glass milk, slept 5 hours",
     "workouts": [],
     "meals": [
       {
-        "meal": "lunch",
-        "item": "paneer ki sabzi",
-        "qty": 1.0,
-        "unit": "cup"
+        "meal": "breakfast",
+        "unit": null,
+        "qty": 3,
+        "item": "egg"
       },
       {
-        "meal": "lunch",
-        "item": "roti",
-        "qty": 2.0,
-        "unit": null
+        "meal": "breakfast",
+        "unit": null,
+        "qty": 2,
+        "item": "bread"
       },
       {
-        "meal": "lunch",
-        "item": "dahi",
-        "qty": 100.0,
-        "unit": "g"
+        "meal": "breakfast",
+        "unit": "glass",
+        "qty": 1,
+        "item": "milk"
       }
     ],
-    "sleep_hours": null,
+    "sleep_hours": 5,
     "exam_in_days": null,
-    "bodyweight_kg": null,
+    "bodyweight_kg": 70.2,
     "notes": "",
+    "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:50:01",
+    "transcript": "Bhai mera do din mein exam aane wala hai.\nTo par lekin gym nahi chhootna chahiye so I want three days a week ka plan.\nBata de bhai jo thoda jaldi 45 minute mein I can done the whole workout and three days a week I would just want a plan.\nBaaki khana peena sona baad mein dekhte hain just tell me this exercise plan.",
+    "workouts": [],
+    "meals": [],
+    "sleep_hours": null,
+    "exam_in_days": 2,
+    "bodyweight_kg": null,
+    "notes": "User wants a 3-day-a-week workout plan that can be completed in 45 minutes. Food, sleep, and other details will be discussed later.",
     "warnings": []
   }
 ]

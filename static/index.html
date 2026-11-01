@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mess-to-Muscle</title>
+<title>gym-bhai</title>
 <style>
   :root {
     --bg:#0c0e12; --panel:#14171d; --panel2:#1a1e26; --line:#262b35; --ink:#eceff4; --dim:#8b93a1;
@@ -62,11 +62,12 @@
 </head>
 <body>
 <header>
-  <div class="brand">MESS<b>→</b>MUSCLE</div>
+  <div class="brand">GYM<b>-</b>BHAI</div>
   <div class="profile">
     Goal <select id="goal"><option value="bulk">Bulk</option><option value="maintain">Maintain</option><option value="cut">Cut</option></select>
     Level <select id="exp"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option></select>
     Weight <input type="number" id="bw" placeholder="kg" step="0.1" min="30" max="200">
+    Voice <select id="voice"></select>
     Mic language <select id="lang"><option value="unknown">Auto</option><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select>
   </div>
 </header>
@@ -74,7 +75,7 @@
 <main>
   <section class="card coach">
     <h2>Your coach</h2>
-    <div class="say" id="say">Tell me what you lifted, ate or slept, or ask what to do next. Try: "bench 40 kg 10 reps, kya badhaun?"</div>
+    <div class="say" id="say">Yo, gym-bhai here. Tell me what you lifted, ate or slept, or ask what to do next. Try: "bench 40 kg 10 reps, kya badhaun?"</div>
     <div class="you" id="you"></div>
     <div class="logged" id="logged"></div>
     <div class="controls">
@@ -189,13 +190,19 @@ function fmtLogged(e) {
 
 async function send(form) {
   if (busy) return; busy = true; $("mic").disabled = true;
-  $("say").textContent = "Thinking…"; $("you").textContent = ""; $("logged").innerHTML = "";
+  const steps = form.has("audio") ? ["Listening to you…", "Logging your sets…", "Running the numbers…", "Writing your reply…"]
+                                  : ["Logging your sets…", "Running the numbers…", "Writing your reply…"];
+  let k = 0; $("say").textContent = steps[0];
+  const ticker = setInterval(() => { k = Math.min(k + 1, steps.length - 1); $("say").textContent = steps[k]; }, 1800);
+  $("you").textContent = ""; $("logged").innerHTML = "";
   form.append("language", $("lang").value);
+  form.append("voice", $("voice").value);
   form.append("history", JSON.stringify(history.slice(-6)));
   try {
     const r = await fetch("/api/coach", { method:"POST", body:form });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || "Server error");
+    clearInterval(ticker);
     $("you").textContent = "You: " + d.transcript;
     $("logged").innerHTML = (d.logged ? fmtLogged(d.logged).map(t => `<span class="tag">✓ ${esc(t)}</span>`) : [])
       .concat((d.warnings || []).map(w => `<span class="tag warn">⚠ ${esc(w)}</span>`)).join("");
@@ -204,7 +211,7 @@ async function send(form) {
     render(d.status);
     lastAudio = d.audio; $("replay").style.display = lastAudio ? "" : "none";
     if (lastAudio) play();
-  } catch (e) { $("say").textContent = "Something went wrong: " + e.message; }
+  } catch (e) { clearInterval(ticker); $("say").textContent = "Something went wrong: " + e.message; }
   finally { busy = false; $("mic").disabled = false; }
 }
 function play() { const p = $("player"); p.src = "data:audio/wav;base64," + lastAudio; p.play(); }
@@ -229,7 +236,15 @@ $("mic").onclick = async () => {
   } catch (e) { $("say").textContent = "Mic blocked (" + e.message + "). Type instead."; }
 };
 
-loadProfile(); loadStatus();
+async function loadVoices() {
+  const d = await (await fetch("/api/voices")).json();
+  $("voice").innerHTML = Object.entries(d.voices).map(([id, label]) => `<option value="${id}">${esc(label)}</option>`).join("");
+  let saved = null; try { saved = localStorage.getItem("gymbhai-voice"); } catch (e) {}
+  $("voice").value = d.voices[saved] ? saved : d.default;
+}
+$("voice").onchange = () => { try { localStorage.setItem("gymbhai-voice", $("voice").value); } catch (e) {} };
+
+loadVoices(); loadProfile(); loadStatus();
 </script>
 </body>
 </html>

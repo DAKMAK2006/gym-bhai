@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import threading
 from datetime import datetime
 from pathlib import Path
 
@@ -154,7 +155,11 @@ def log_entry():
 
 COACH_REASONING = "low"
 
-COACH_PROMPT = """You are the voice coach inside "Mess-to-Muscle", a gym app for IIT Bombay hostel students. Tone: friendly, practical senior ("bhaiya"-style), light humour, never preachy. You know hostel life: mess food, exams, bad sleep.
+VOICES = {"sunny": "Sunny (hype)", "rahul": "Rahul (chill)", "dev": "Dev (smooth)", "amit": "Amit (calm)",
+          "rohan": "Rohan (young)", "kabir": "Kabir (deep)", "varun": "Varun", "aditya": "Aditya"}
+DEFAULT_VOICE = "sunny"
+
+COACH_PROMPT = """You are gym-bhai, the chill gym buddy inside the "gym-bhai" app for IIT Bombay hostel students. Think relaxed, warm older gym-bro: casual words like "bro", "yaar", "chill", "let's go", "easy"; hype but never loud; never harsh, bossy or scolding. Praise the real effort first, then give suggestions as friendly nudges ("let's try 42.5 next, easy") and not commands. Light humour is welcome. You know hostel life: mess food, exams, bad sleep.
 You get FACTS computed by the app's rules engine. Rules:
 - Use ONLY numbers, weights and recommendations that appear in FACTS. Never invent or recalculate numbers. If FACTS don't have what's needed, say what to log first.
 - If the user asked what to do with a lift, answer from next_targets (increase / stay / reduce) and give the exact kg and reps.
@@ -163,7 +168,7 @@ You get FACTS computed by the app's rules engine. Rules:
 - Only if the user asks about exercise form: you cannot see them, so give 1-2 general cues and say you can't check their form. Never mention form otherwise. If they mention pain or injury, tell them to see a doctor or physio.
 - Never mention FACTS, field names, "next_targets", "factor" or "modifiers". Speak naturally, as if you just know it. Only mention volume/weight changes when they are below 1.0, in plain words (e.g. "keep it light today").
 - Reply in 2-4 short spoken sentences (under 60 words), no emojis, no markdown, no lists.
-- LANGUAGE is given in FACTS as reply_language. "hindi": write ONLY in Devanagari script (e.g. "आज 40 kg पर 10 reps शानदार रहे"); gym terms like bench press, protein, reps, kg stay in English letters; never use Roman-script Hindi. "english": write ONLY plain English, no Hindi words.
+- LANGUAGE is given in FACTS as reply_language. "hindi": write ONLY in Devanagari script in a casual, friendly register (e.g. "अरे भाई, 40 kg पर 10 reps, मस्त! चल अब 42.5 try करते हैं"), never formal or curt orders; gym terms like bench press, protein, reps, kg stay in English letters; never use Roman-script Hindi. "english": write ONLY plain English, no Hindi words.
 Respond ONLY with JSON: {"say": "..."}"""
 
 
@@ -239,9 +244,12 @@ def coach():
                                    reasoning_effort=COACH_REASONING)
     reply = {"say": parse_coach(resp.choices[0].message.content), "lang": "hi-IN" if lang == "hindi" else "en-IN"}
 
+    voice = request.form.get("voice")
+    voice = voice if voice in VOICES else DEFAULT_VOICE
     audio_b64 = None
     try:
-        tts = client.text_to_speech.convert(text=reply["say"][:1500], language_code=reply["lang"], model="bulbul:v3", speaker="aditya")
+        tts = client.text_to_speech.convert(text=reply["say"][:1500], language_code=reply["lang"], model="bulbul:v3",
+                                            speaker=voice, pace=1.05)
         audio_b64 = tts.audios[0]
     except Exception as e:  # keep the demo alive without voice
         print("TTS failed:", e)
@@ -266,5 +274,21 @@ def profile():
     return jsonify(rules.load_profile())
 
 
+@app.get("/api/voices")
+def voices():
+    return jsonify({"voices": VOICES, "default": DEFAULT_VOICE})
+
+
+def warm_up():
+    """Fire one tiny request per Sarvam API so the first real request isn't a cold start."""
+    try:
+        client.chat.completions(model="sarvam-105b-conversations", messages=[{"role": "user", "content": "hi"}])
+        client.text_to_speech.convert(text="ready", language_code="en-IN", model="bulbul:v3", speaker=DEFAULT_VOICE)
+        print("Warm-up done.")
+    except Exception as e:
+        print("Warm-up skipped:", e)
+
+
 if __name__ == "__main__":
+    threading.Thread(target=warm_up, daemon=True).start()
     app.run(port=5050, debug=False)
