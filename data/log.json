@@ -68,5 +68,123 @@
     "bodyweight_kg": null,
     "notes": "The user is asking whether to increase, decrease, or continue working on the bench press weight.",
     "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:40:12",
+    "transcript": "bench 40 kg 10 reps, kya badhaun?",
+    "workouts": [
+      {
+        "exercise": "bench press",
+        "sets": [
+          {
+            "reps": 10,
+            "kg": 40.0
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "kya badhaun?",
+    "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:40:32",
+    "transcript": "bench 40 kg 10 reps, kya badhaun?",
+    "workouts": [
+      {
+        "exercise": "bench press",
+        "sets": [
+          {
+            "reps": 10,
+            "kg": 40.0
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "kya badhaun?",
+    "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:40:54",
+    "transcript": "bench 40 kg 10 reps, kya badhaun?",
+    "workouts": [
+      {
+        "exercise": "bench press",
+        "sets": [
+          {
+            "reps": 10,
+            "kg": 40.0
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "kya badhaun?",
+    "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:43:20",
+    "transcript": "Hello hello hello. Ah so I did lat pull down 70 kilograms two sets of 10 reps and then 12 reps. Should I increase it or not because I have been doing this since past two sessions.",
+    "workouts": [
+      {
+        "exercise": "lat pulldown",
+        "sets": [
+          {
+            "reps": 10,
+            "kg": 70.0
+          },
+          {
+            "reps": 12,
+            "kg": 70.0
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "Asked whether to increase the weight or not as he has been doing this since the past two sessions.",
+    "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:44:07",
+    "transcript": "Okay now I ate around one cup of paneer ki sabzi and with two two rotis and then I ate around hundred grams of dahi.",
+    "workouts": [],
+    "meals": [
+      {
+        "meal": "lunch",
+        "item": "paneer ki sabzi",
+        "qty": 1.0,
+        "unit": "cup"
+      },
+      {
+        "meal": "lunch",
+        "item": "roti",
+        "qty": 2.0,
+        "unit": null
+      },
+      {
+        "meal": "lunch",
+        "item": "dahi",
+        "qty": 100.0,
+        "unit": "g"
+      }
+    ],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "",
+    "warnings": []
   }
 ]
