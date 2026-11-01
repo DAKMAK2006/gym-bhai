@@ -7,6 +7,8 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from sarvamai import SarvamAI
 
+import rules
+
 ROOT = Path(__file__).parent
 env_file = ROOT / ".env"
 if env_file.exists():
@@ -29,7 +31,7 @@ EXTRACT_PROMPT = """You turn a gym student's spoken log (Hinglish / English / ot
 Extract ONLY what was actually said. Never invent numbers. Use null when something was not mentioned.
 Output ONLY a JSON object, no prose, in exactly this shape:
 {
- "workouts": [{"exercise": "bench press", "sets": [{"reps": 8, "kg": 60}]}],
+ "workouts": [{"exercise": "bench press", "sets": [{"reps": 8, "kg": 60, "times": 1}]}],
  "meals": [{"meal": "lunch" | "breakfast" | "dinner" | "snack" | null, "item": "roti", "qty": 4, "unit": "piece" | "bowl" | "g" | "glass" | "scoop" | null}],
  "sleep_hours": number or null,
  "exam_in_days": integer or null,
@@ -38,7 +40,8 @@ Output ONLY a JSON object, no prose, in exactly this shape:
 }
 Rules:
 - Normalise exercise names to English lowercase (e.g. "bench", "बेंच" -> "bench press"; "deadlift"; "squat"; "overhead press"; "lat pulldown").
-- "60 x 8, 8, 6" means three sets at 60 kg: reps 8, 8, 6. "3 sets of 8 at 60" means three separate sets, each 8 reps at 60 kg.
+- "60 x 8, 8, 6" means three sets at 60 kg: write three set objects with reps 8, 8, 6, each times 1.
+- "3 sets of 8 at 60", "60 kilo 3 sets of 8" or "3x8 at 60" means three identical sets: write ONE set object with reps 8, kg 60, times 3. "times" is how many identical sets (default 1). Always read the set count; never drop it.
 - Bodyweight exercises (pull-ups, push-ups, dips): kg is null.
 - Split every food into its own meals entry. "4 roti dal paneer" -> roti qty 4, dal qty null, paneer qty null.
 - "kilo" means kg. Hindi number words count too (teen = 3, chaar = 4, paanch = 5).
@@ -81,7 +84,8 @@ def validate(data):
             if kg is None and s.get("kg") is not None:
                 out["warnings"].append(f"{name}: dropped a set with unrealistic weight ({s.get('kg')} kg)")
                 continue
-            sets.append({"reps": int(reps), "kg": kg})
+            times = _num(s.get("times"), 1, 10)
+            sets.extend({"reps": int(reps), "kg": kg} for _ in range(int(times or 1)))
         if name and sets:
             out["workouts"].append({"exercise": name, "sets": sets})
     for m in data.get("meals") or []:
@@ -151,6 +155,18 @@ def log_entry():
 @app.get("/api/entries")
 def entries():
     return jsonify(load_log())
+
+
+@app.get("/api/status")
+def status():
+    return jsonify(rules.daily_status(load_log()))
+
+
+@app.route("/api/profile", methods=["GET", "POST"])
+def profile():
+    if request.method == "POST":
+        return jsonify(rules.save_profile(request.get_json(force=True) or {}))
+    return jsonify(rules.load_profile())
 
 
 if __name__ == "__main__":
