@@ -41,17 +41,22 @@ SEED = [
         {"meal": "breakfast", "item": "milk", "qty": 1, "unit": "glass"}], sleep=5, bw=70.2),
 ]
 
-if "--restore" in sys.argv:
-    if BACKUP.exists():
-        shutil.copy(BACKUP, LOG)
-        print("Restored", LOG)
-    else:
-        print("No backup found.")
-    raise SystemExit
-DATA.mkdir(exist_ok=True)
-if LOG.exists() and not BACKUP.exists():
-    shutil.copy(LOG, BACKUP)
-    print("Backed up existing log to", BACKUP)
-LOG.write_text(json.dumps(SEED, indent=2, ensure_ascii=False))
-(DATA / "profile.json").write_text(json.dumps({"goal": "bulk", "experience": "beginner", "bodyweight_kg": 70.2}, indent=2))
-print(f"Seeded {len(SEED)} entries. Restart not needed; reload the page.")
+def main():
+    if "--restore" in sys.argv:
+        if BACKUP.exists():
+            shutil.copy(BACKUP, LOG)
+            print("Restored", LOG)
+        else:
+            print("No backup found.")
+        return
+    DATA.mkdir(exist_ok=True)
+    if LOG.exists() and not BACKUP.exists():
+        shutil.copy(LOG, BACKUP)
+        print("Backed up existing log to", BACKUP)
+    LOG.write_text(json.dumps(SEED, indent=2, ensure_ascii=False))
+    (DATA / "profile.json").write_text(json.dumps({"goal": "bulk", "experience": "beginner", "bodyweight_kg": 70.2}, indent=2))
+    print(f"Seeded {len(SEED)} entries. Restart not needed; reload the page.")
+
+
+if __name__ == "__main__":
+    main()

@@ -345,5 +345,30 @@
     "bodyweight_kg": null,
     "notes": "User wants a 3-day-a-week workout plan that can be completed in 45 minutes. Food, sleep, and other details will be discussed later.",
     "warnings": []
+  },
+  {
+    "ts": "2026-11-01T16:55:39",
+    "transcript": "हाँ मैंने आज pre-check करके तो आज 35 kilo के 12 12 reps मारे एक set में and दूसरे set में मैंने वापस से 12 reps मारे।",
+    "workouts": [
+      {
+        "exercise": "bench press",
+        "sets": [
+          {
+            "reps": 12,
+            "kg": 35.0
+          },
+          {
+            "reps": 12,
+            "kg": 35.0
+          }
+        ]
+      }
+    ],
+    "meals": [],
+    "sleep_hours": null,
+    "exam_in_days": null,
+    "bodyweight_kg": null,
+    "notes": "",
+    "warnings": []
   }
 ]

@@ -3,7 +3,9 @@ import json
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent / "data"
+import os
+
+DATA_DIR = Path("/tmp/gymbhai-data") if os.environ.get("VERCEL") else Path(__file__).parent / "data"
 PROFILE_FILE = DATA_DIR / "profile.json"
 DEFAULT_PROFILE = {"goal": "bulk", "experience": "beginner", "bodyweight_kg": None}
 FALLBACK_BODYWEIGHT = 70.0
@@ -108,7 +110,7 @@ def load_profile():
 
 
 def save_profile(update):
-    DATA_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     p = load_profile()
     if update.get("goal") in ("bulk", "cut", "maintain"):
         p["goal"] = update["goal"]

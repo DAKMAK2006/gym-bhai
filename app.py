@@ -25,8 +25,9 @@ if not api_key:
 client = SarvamAI(api_subscription_key=api_key)
 app = Flask(__name__, static_folder="static")
 
-DATA_DIR = ROOT / "data"
+DATA_DIR = rules.DATA_DIR
 LOG_FILE = DATA_DIR / "log.json"
+ON_VERCEL = bool(os.environ.get("VERCEL"))
 
 EXTRACT_PROMPT = """You turn a gym student's spoken log (Hinglish / English / other Indian languages, possibly noisy transcription) into JSON.
 Extract ONLY what was actually said. Never invent numbers. Use null when something was not mentioned.
@@ -52,11 +53,16 @@ Rules:
 def load_log():
     if LOG_FILE.exists():
         return json.loads(LOG_FILE.read_text())
+    if ON_VERCEL:  # serverless disk starts empty: seed the demo week so the dashboard isn't blank
+        import seed_demo
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        LOG_FILE.write_text(json.dumps(seed_demo.SEED, ensure_ascii=False))
+        return seed_demo.SEED
     return []
 
 
 def save_entry(entry):
-    DATA_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     log = load_log()
     log.append(entry)
     LOG_FILE.write_text(json.dumps(log, indent=2, ensure_ascii=False))
